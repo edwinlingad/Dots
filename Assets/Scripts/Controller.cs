@@ -1,16 +1,26 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+
+public enum PageLocation {
+    Top,
+    Bottom
+};
 
 public class Controller : MonoBehaviour {
 
     [SerializeField]
     public MonoBehaviourHelper Helper;
+    [SerializeField]
+    public Camera Camera;
+    [SerializeField]
+    private Text PageTextBottom;
+    [SerializeField]
+    private Text PageTextTop;
 
     #region Configurables
-    [SerializeField]
-    private Text PageText;
     public GameObject[] Dots;
     #endregion
 
@@ -18,7 +28,6 @@ public class Controller : MonoBehaviour {
     private int _totalPages;
     private List<PageBase> Pages;
     public PageBase CurrentPage { get; private set; }
-    
     
     private void Start() {
         Pages = GetPages();
@@ -32,13 +41,23 @@ public class Controller : MonoBehaviour {
             return;
 
         _currentIndex++;
-        StartCoroutine(DelayedGotoNextPage());
+        CurrentPage = Pages[_currentIndex];
+        ShowPageText();
     }
 
-    private IEnumerator DelayedGotoNextPage() {
-        yield return new WaitForSeconds(0.5f);
-        CurrentPage = Pages[_currentIndex];
-        PageText.text = CurrentPage.PageInstruction;
+    private void ShowPageText() {
+        if(CurrentPage.PageTextLocation == PageLocation.Bottom) {
+            PageTextTop.text = "";
+            PageTextBottom.text = CurrentPage.PageText;
+            PageTextBottom.color = CurrentPage.PageTextColor;
+            return;
+        }
+
+        if(CurrentPage.PageTextLocation == PageLocation.Top) {
+            PageTextBottom.text = "";
+            PageTextTop.text = CurrentPage.PageText;
+            PageTextTop.color = CurrentPage.PageTextColor;
+        }
     }
 
     public void GotoPrevPage() {
@@ -49,8 +68,30 @@ public class Controller : MonoBehaviour {
         CurrentPage = Pages[_currentIndex];
     }
 
+    public void SetPageText(string text) {
+        PageTextBottom.text = text;
+    }
+
     public void OnPressed(DotBehavior dot) {
         CurrentPage.OnPressed(dot);
+    }
+
+    public void DelayedRun(Action action, float sec) {
+        StartCoroutine(DoDelayedRun(action, sec));
+    }
+
+    public void DelayedRunWithGotoNextPage(Action action, float sec) {
+        StartCoroutine(DoDelayedRun(() => {
+            action?.Invoke();
+            DelayedRun(() => {
+                GotoNextPage();
+            }, PageBase.NextPageDelay);
+        }, sec));
+    }
+
+    private IEnumerator DoDelayedRun(Action action, float sec) {
+        yield return new WaitForSeconds(sec);
+        action?.Invoke();
     }
 
     private List<PageBase> GetPages() {

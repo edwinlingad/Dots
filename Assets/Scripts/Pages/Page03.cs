@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Page03 : PageBase {
-    public override string PageInstruction => "Rub the left dot";
+    public override string PageText => "Rub the left dot";
 
     public Page03(Controller controller) : base(controller) {
     }
@@ -13,6 +13,8 @@ public class Page03 : PageBase {
             return;
         _isPressed = true;
 
-        ChangeColorAndGotoNextPage(dot, Color.red);
+        DelayedRunWithGotoNextPage(() => {
+            dot.Material.color = Color.red;
+        }, AnyActionDelay);
     }
 }

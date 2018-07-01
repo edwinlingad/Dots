@@ -5,10 +5,16 @@ using UnityEngine;
 
 public class PageBase {
 
+    public const float AnyActionDelay = 0.5f;
+    public const float NextPageDelay = 0.25f;
+
     protected bool _isPressed = false;
     protected int _numTimePressed = 0;
 
-    public virtual string PageInstruction { get; }
+    public virtual PageLocation PageTextLocation { get; } = PageLocation.Bottom;
+    public virtual string PageText { get; }
+    public virtual Color PageTextColor { get; } = Color.black;
+
     protected Controller Controller;
     private List<Action<DotBehavior>> _actions;
 
@@ -77,12 +83,20 @@ public class PageBase {
 
     }
 
-    protected void ShowDot(int id) {
-        Controller.Helper.ShowDot(Controller.Dots[id - 1]);
+    protected void DelayedRun(Action action, float sec) {
+        Controller.DelayedRun(action, sec);
     }
 
-    protected void ShowDotAndGotoNextPage(int id) {
-        Controller.Helper.ShowDotAndGotoNextPage(Controller.Dots[id - 1]);
+    protected void DelayedRunWithGotoNextPage(Action action, float sec) {
+        Controller.DelayedRunWithGotoNextPage(action, sec);
+    }
+
+    protected void SetPageText(string text) {
+        Controller.SetPageText(text);
+    }
+
+    protected void ShowDot(int id, string text = null) {
+        Controller.Dots[id - 1].SetActive(true);
     }
 
     protected void HideDot(int id) {
@@ -91,9 +105,5 @@ public class PageBase {
 
     protected void GotoNextPage() {
         Controller.GotoNextPage();
-    }
-
-    protected void ChangeColorAndGotoNextPage(DotBehavior dot, Color color) {
-        Controller.Helper.ChangeColorAndGotoNextPage(dot, color);
     }
 }

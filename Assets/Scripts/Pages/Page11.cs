@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Page11 : PageBase {
 
-    public override string PageInstruction => "Press the yellow dot again";
+    public override string PageText => "Tilt to the left";
 
     public Page11(Controller controller) : base(controller) {
     }
@@ -13,14 +13,6 @@ public class Page11 : PageBase {
         if (_isPressed == true)
             return;
 
-        if (_numTimePressed >= 4)
-        {
-            GotoNextPage();
-            _isPressed = true;
-            return;
-        }
-
-        ShowDot(_numTimePressed + 8);
-        _numTimePressed++;
+        _isPressed = true;
     }
 }

@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Page10 : PageBase {
 
-    public override string PageInstruction => "Press the yellow dot again";
+    public override string PageText => "Press the yellow dot again";
+    public override Color PageTextColor => Color.white;
 
     public Page10(Controller controller) : base(controller) {
     }
@@ -13,14 +14,11 @@ public class Page10 : PageBase {
         if (_isPressed == true)
             return;
 
-        if (_numTimePressed >= 4)
+        _isPressed = true;
+        Controller.Camera.backgroundColor = Color.white;
+        for (int i = 1; i < 15; i++)
         {
-            GotoNextPage();
-            _isPressed = true;
-            return;
+            Controller.Dots[i].SetActive(true);
         }
-
-        ShowDot(_numTimePressed + 8);
-        _numTimePressed++;
     }
 }

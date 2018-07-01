@@ -11,18 +11,20 @@ public class MonoBehaviourHelper : MonoBehaviour {
     }
 
     public IEnumerator DelayedChangeColor(DotBehavior dot, Color color) {
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1f);
         dot.Material.color = color;
         Controller.GotoNextPage();
     }
 
-    public void ShowDot(GameObject dot) {
-        StartCoroutine(DelayedShowDot(dot));
+    public void ShowDot(GameObject dot, string text = null) {
+        StartCoroutine(DelayedShowDot(dot, text));
     }
 
-    public IEnumerator DelayedShowDot(GameObject dot) {
-        yield return new WaitForSeconds(1);
+    public IEnumerator DelayedShowDot(GameObject dot, string text = null) {
+        yield return new WaitForSeconds(0.5f);
         dot.SetActive(true);
+        if (string.IsNullOrEmpty(text) == false)
+            Controller.SetPageText(text);
     }
 
     public void ShowDotAndGotoNextPage(GameObject dot) {
@@ -30,7 +32,7 @@ public class MonoBehaviourHelper : MonoBehaviour {
     }
 
     public IEnumerator DelayedShowDotAndGotoNextPage(GameObject dot) {
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.5f);
         dot.SetActive(true);
         Controller.GotoNextPage();
     }

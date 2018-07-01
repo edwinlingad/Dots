@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Page01 : PageBase {
-    public override string PageInstruction => "Press the dot in the middle";
-    
+    public override string PageText => "Press the dot in the middle";
 
     public Page01(Controller controller) : base(controller) {
     }
@@ -14,7 +13,9 @@ public class Page01 : PageBase {
             return;
         _isPressed = true;
 
-        ShowDotAndGotoNextPage(2);
+        DelayedRunWithGotoNextPage(() => {
+            ShowDot(2);
+        }, AnyActionDelay);
     }
 }
 

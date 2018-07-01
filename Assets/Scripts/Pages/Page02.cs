@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 
 public class Page02 : PageBase {
-    public override string PageInstruction => "Press the middle dot again";
+    public override PageLocation PageTextLocation => PageLocation.Top;
+    public override string PageText => "Press the middle dot again";
 
     public Page02(Controller controller) : base(controller) {
     }
@@ -16,6 +17,8 @@ public class Page02 : PageBase {
             return;
         _isPressed = true;
 
-        ShowDotAndGotoNextPage(3);
+        DelayedRunWithGotoNextPage(() => {
+            ShowDot(3);
+        }, AnyActionDelay);
     }
 }
