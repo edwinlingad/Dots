@@ -11,8 +11,8 @@ public enum PageLocation {
 
 public class Controller : MonoBehaviour {
 
-    [SerializeField]
-    public MonoBehaviourHelper Helper;
+    private const float _tiltVariation = 0.3f;
+
     [SerializeField]
     public Camera Camera;
     [SerializeField]
@@ -33,7 +33,7 @@ public class Controller : MonoBehaviour {
         Pages = GetPages();
         _totalPages = Pages.Count;
         GotoNextPage();
-        Helper.Controller = this;
+        //Helper.Controller = this;
     }
 
     public void GotoNextPage() {
@@ -92,6 +92,21 @@ public class Controller : MonoBehaviour {
     private IEnumerator DoDelayedRun(Action action, float sec) {
         yield return new WaitForSeconds(sec);
         action?.Invoke();
+    }
+
+    public void OnTiltLeft() {
+        Physics.gravity = new Vector3(-10, _tiltVariation * -1);
+    }
+
+    public void OnTiltRight() {
+        Physics.gravity = new Vector3(10, _tiltVariation);
+    }
+    public void OnTiltUp() {
+        Physics.gravity = new Vector3(0, 10);
+    }
+
+    public void OnTiltDown() {
+        Physics.gravity = new Vector3(0, -10);
     }
 
     private List<PageBase> GetPages() {

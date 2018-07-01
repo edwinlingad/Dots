@@ -12,16 +12,13 @@ public class DotBehavior : MonoBehaviour {
         Material = GetComponent<Renderer>().material;
     }
 
-    private void OnCollisionEnter(Collision collision) {
-        _controller.OnPressed(this);
-    }
-
-    private void OnTriggerEnter(Collider other) {
-        _controller.OnPressed(this);
-    }
-
     private void OnMouseDown() {
         _controller.OnPressed(this);
-        
+    }
+
+    private void Update() {
+        var position = transform.position;
+        position.z = 0;
+        transform.position = position;
     }
 }
