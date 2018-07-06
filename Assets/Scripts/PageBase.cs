@@ -40,6 +40,12 @@ public class PageBase {
             OnPressed08,
             OnPressed09,
             OnPressed10,
+            OnPressed11,
+            OnPressed12,
+            OnPressed13,
+            OnPressed14,
+            OnPressed15,
+
         };
     }
 
@@ -80,6 +86,26 @@ public class PageBase {
     }
 
     protected virtual void OnPressed10(DotBehavior dot) {
+
+    }
+
+    protected virtual void OnPressed11(DotBehavior dot) {
+
+    }
+
+    protected virtual void OnPressed12(DotBehavior dot) {
+
+    }
+
+    protected virtual void OnPressed13(DotBehavior dot) {
+
+    }
+
+    protected virtual void OnPressed14(DotBehavior dot) {
+
+    }
+
+    protected virtual void OnPressed15(DotBehavior dot) {
 
     }
 

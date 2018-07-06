@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Page03 : PageBase {
-    public override string PageText => "Rub the left dot";
+    public override string PageText => "Rub the dot on the left";
 
     public Page03(Controller controller) : base(controller) {
     }
