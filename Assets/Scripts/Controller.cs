@@ -1,5 +1,6 @@
 ﻿using AscensiveSoftware.Tools;
 using AscensiveSoftware.Tools.Tools;
+using Assets.Scripts.Tools;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,9 +12,23 @@ public enum PageLocation {
     Bottom
 };
 
+public enum MaterialColorEnum {
+    Black = 0,
+    Blue = 1,
+    Gold = 2,
+    Red = 3,
+    Orange = 4,
+    Green = 5,
+}
+
 public class Controller : MonoBehaviour {
 
+    public static bool IsGlobalDragEnabled { get; set; } = true;
+    public static Controller Instance { get; set; }
+    public bool IsMicInputEnabled { get; set; } = false;
+
     private const float _tiltVariation = 0.3f;
+    private MicInput _micInput;
 
     [SerializeField]
     public Camera Camera;
@@ -31,6 +46,7 @@ public class Controller : MonoBehaviour {
     private GameObject _bottomWall;
 
     #region Configurables
+    public Material[] Materials;
     public GameObject[] Dots;
     #endregion
 
@@ -40,8 +56,14 @@ public class Controller : MonoBehaviour {
     public PageBase CurrentPage { get; private set; }
 
     private UiTextUtil _bottomTextUtil;
+    private float _loudnessThreshold = 1.0f;
 
     public bool TiltEnabled { get; set; } = true;
+
+    private void Awake() {
+        Instance = this;
+        _micInput = gameObject.GetComponent<MicInput>();
+    }
 
     private void Start() {
         _bottomTextUtil = new UiTextUtil(this, _pageTextBottom);
@@ -60,12 +82,20 @@ public class Controller : MonoBehaviour {
     }
 
     private void Update() {
-        if (TiltEnabled == false)
-            return;
+        if (TiltEnabled == true) {
+            float x = Input.acceleration.x * 10;
+            float y = Input.acceleration.y * 10;
+            Physics.gravity = new Vector3(x, y, 0);
+        }
 
-        float x = Input.acceleration.x * 10;
-        float y = Input.acceleration.y * 10;
-        Physics.gravity = new Vector3(x, y, 0);
+        if(IsMicInputEnabled == true) {
+            var loudness = _micInput.loudness;
+            PageTextTop.text = $" Loudness = {loudness}";
+            if (loudness > _loudnessThreshold) {
+                PageTextTop.text = $" Loudness = {loudness}";
+            }
+        }
+
     }
 
     public void GotoNextPage() {
@@ -74,25 +104,13 @@ public class Controller : MonoBehaviour {
 
         _currentIndex++;
         CurrentPage = Pages[_currentIndex];
+        CurrentPage.Init();
         ShowPageText();
     }
 
     private void ShowPageText() {
         _bottomTextUtil.TypeText(CurrentPage.PageText);
         _pageTextBottom.color = CurrentPage.PageTextColor;
-        //if (CurrentPage.PageTextLocation == PageLocation.Bottom) {
-        //    _bottomTextUtil.TypeText(CurrentPage.PageText);
-        //    _pageTextBottom.color = CurrentPage.PageTextColor;
-        //    //PageTextTop.text = "";
-        //    //_pageTextBottom.text = CurrentPage.PageText;
-        //    return;
-        //}
-
-        //if(CurrentPage.PageTextLocation == PageLocation.Top) {
-        //    _pageTextBottom.text = "";
-        //    PageTextTop.text = CurrentPage.PageText;
-        //    PageTextTop.color = CurrentPage.PageTextColor;
-        //}
     }
 
     public void GotoPrevPage() {
@@ -147,23 +165,26 @@ public class Controller : MonoBehaviour {
     private List<PageBase> GetPages() {
         return new List<PageBase>
         {
-            new Page01(this),   // middle
-            new Page02(this),   // left
-            new Page02_01(this), // right 
-            new Page02_02(this), // top
-            new Page02_03(this), // bottom color
-            new Page02_04(this), // top color
-            new Page02_05(this),   // right color
-            new Page03(this),   // left color
-            new Page05(this), // middle color
-            new Page06(this),
-            new Page07(this),
-            new Page08(this),
-            new Page09(this),
-            new Page10(this),
-            new Page11(this), // Black Screen
-            new Page12(this), // Black Screen 2
-            new Page13(this),
+            //new Page01(this),   // middle
+            //new Page02(this),   // left
+            //new Page02_01(this), // right 
+            //new Page02_02(this), // top
+            //new Page02_03(this), // bottom color
+            //new Page02_04(this), // top color
+            //new Page02_05(this),   // right color
+            //new Page03(this),   // left color
+            //new Page05(this), // middle color
+            //new Page06(this), // Dup Blue
+            //new Page08(this), // Dup Yellow
+            //new Page07(this), // Dup Red
+            //new Page09(this), // Yellow Dot - bg black
+            //new Page10(this), // Yellow Dot 2
+            ////new Page11(this), // Tilt Left
+            ////new Page12(this), // Tilt Right
+            //new Page13(this), // Dis Red
+            //new Page14(this), // Dis Blue
+            //new Page15(this), // Dis Yellow
+            new Page_ScaleUp(this)
         };
     }
 }

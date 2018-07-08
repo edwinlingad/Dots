@@ -63,7 +63,8 @@
     <Compile Include="Assets\Scripts\Controller.cs" />
     <Compile Include="Assets\Scripts\DotBehavior.cs" />
     <Compile Include="Assets\Scripts\MonoBehaviourHelper.cs" />
-    <Compile Include="Assets\Scripts\PageBase.cs" />
+    <Compile Include="Assets\Scripts\Pages\Page_ScaleUp.cs" />
+    <Compile Include="Assets\Scripts\Pages\Page_SmallDotsToBig.cs" />
     <Compile Include="Assets\Scripts\Pages\Page01.cs" />
     <Compile Include="Assets\Scripts\Pages\Page02.cs" />
     <Compile Include="Assets\Scripts\Pages\Page02_01.cs" />
@@ -81,8 +82,14 @@
     <Compile Include="Assets\Scripts\Pages\Page11.cs" />
     <Compile Include="Assets\Scripts\Pages\Page12.cs" />
     <Compile Include="Assets\Scripts\Pages\Page13.cs" />
+    <Compile Include="Assets\Scripts\Pages\Page14.cs" />
+    <Compile Include="Assets\Scripts\Pages\Page15.cs" />
+    <Compile Include="Assets\Scripts\Pages\PageBase.cs" />
+    <Compile Include="Assets\Scripts\Tools\ColorUtil.cs" />
     <Compile Include="Assets\Scripts\Tools\GizmosRenderer.cs" />
     <Compile Include="Assets\Scripts\Tools\Helper.cs" />
+    <Compile Include="Assets\Scripts\Tools\MicInput.cs" />
+    <Compile Include="Assets\Scripts\Tools\ScaleUtil.cs" />
     <Compile Include="Assets\Scripts\Tools\ScreenUtil.cs" />
     <Compile Include="Assets\Scripts\Tools\UiTextUtil.cs" />
     <Reference Include="UnityEditor.StandardEvents">

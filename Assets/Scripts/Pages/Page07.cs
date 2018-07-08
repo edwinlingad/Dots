@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Page07 : PageBase {
-    public override string PageText => "Press the red dot 5 times";
+    private int _startIdx = 4;
+    public override string PageText => "Press the red dot 4 times";
 
     public Page07(Controller controller) : base(controller) {
     }
@@ -12,15 +13,11 @@ public class Page07 : PageBase {
         if (_isPressed == true)
             return;
 
-        if (_numTimePressed >= 4)
-        {
+        ShowDot(_numTimePressed++ + _startIdx);
+        if (_numTimePressed >= 4) {
             GotoNextPage();
             _isPressed = true;
-            return;
         }
-
-        ShowDot(_numTimePressed + 4);
-        _numTimePressed++;
     }
 }
 

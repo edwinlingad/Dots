@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Assets.Scripts.Tools;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,7 +15,7 @@ public class Page03 : PageBase {
         _isPressed = true;
 
         DelayedRunWithGotoNextPage(() => {
-            dot.Material.color = Color.red;
+            ColorUtil.ChangeColor(dot, MaterialColorEnum.Red);
         }, AnyActionDelay);
     }
 }

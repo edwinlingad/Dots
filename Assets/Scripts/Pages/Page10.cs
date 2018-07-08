@@ -20,5 +20,7 @@ public class Page10 : PageBase {
         {
             Controller.Dots[i].SetActive(true);
         }
+
+        GotoNextPage();
     }
 }
