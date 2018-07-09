@@ -20,5 +20,13 @@ namespace Assets.Scripts.Tools {
         public static void MakeSmaller(DotBehavior dot) {
             dot.transform.localScale -= _scaleVector;
         }
+
+        public static void MakeSmallest(DotBehavior dot) {
+            dot.transform.localScale = new Vector3(0.4f, 0.4f, 0.4f);
+        }
+
+        public static void MakeBiggest(DotBehavior dot) {
+            dot.transform.localScale = Vector3.one;
+        }
     }
 }

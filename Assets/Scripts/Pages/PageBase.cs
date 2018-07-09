@@ -23,7 +23,7 @@ public class PageBase {
         _actions = GetActions();
     }
 
-    public void Init() {
+    public virtual void Init() {
         _numTimePressed = 0;
         _isPressed = false;
     }

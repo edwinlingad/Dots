@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Page14 : PageBase {
     public override string PageText => "Same, but the blue ones";
-    public override Color PageTextColor => Color.black;
+    public override Color PageTextColor => Color.white;
     private int _count = 0;
 
     public Page14(Controller controller) : base(controller) {

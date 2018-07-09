@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public enum PageLocation {
@@ -23,7 +24,7 @@ public enum MaterialColorEnum {
 
 public class Controller : MonoBehaviour {
 
-    public static bool IsGlobalDragEnabled { get; set; } = true;
+    public static bool IsGlobalDragEnabled { get; set; } = false;
     public static Controller Instance { get; set; }
     public bool IsMicInputEnabled { get; set; } = false;
 
@@ -48,6 +49,7 @@ public class Controller : MonoBehaviour {
     #region Configurables
     public Material[] Materials;
     public GameObject[] Dots;
+    public List<DotBehavior> DotsBehavior { get; private set; }
     #endregion
 
     private int _currentIndex = -1;
@@ -63,6 +65,11 @@ public class Controller : MonoBehaviour {
     private void Awake() {
         Instance = this;
         _micInput = gameObject.GetComponent<MicInput>();
+        DotsBehavior = new List<DotBehavior>();
+        foreach (var item in Dots) {
+            var dots = item.GetComponent<DotBehavior>();
+            DotsBehavior.Add(dots);
+        }
     }
 
     private void Start() {
@@ -88,24 +95,30 @@ public class Controller : MonoBehaviour {
             Physics.gravity = new Vector3(x, y, 0);
         }
 
-        if(IsMicInputEnabled == true) {
-            var loudness = _micInput.loudness;
-            PageTextTop.text = $" Loudness = {loudness}";
-            if (loudness > _loudnessThreshold) {
-                PageTextTop.text = $" Loudness = {loudness}";
-            }
-        }
+        //if(IsMicInputEnabled == true) {
+        //    var loudness = _micInput.loudness;
+        //    PageTextTop.text = $" Loudness = {loudness}";
+        //    if (loudness > _loudnessThreshold) {
+        //        PageTextTop.text = $" Loudness = {loudness}";
+        //    }
+        //}
 
     }
 
     public void GotoNextPage() {
-        if (_currentIndex >= _totalPages - 1)
+        if (_currentIndex >= _totalPages - 1) {
+            GotoEndPage();
             return;
+        }
 
         _currentIndex++;
         CurrentPage = Pages[_currentIndex];
         CurrentPage.Init();
         ShowPageText();
+    }
+
+    public void GotoEndPage() {
+        SceneManager.LoadScene(2);
     }
 
     private void ShowPageText() {
@@ -165,26 +178,29 @@ public class Controller : MonoBehaviour {
     private List<PageBase> GetPages() {
         return new List<PageBase>
         {
-            //new Page01(this),   // middle
-            //new Page02(this),   // left
-            //new Page02_01(this), // right 
-            //new Page02_02(this), // top
-            //new Page02_03(this), // bottom color
-            //new Page02_04(this), // top color
-            //new Page02_05(this),   // right color
-            //new Page03(this),   // left color
-            //new Page05(this), // middle color
-            //new Page06(this), // Dup Blue
-            //new Page08(this), // Dup Yellow
-            //new Page07(this), // Dup Red
-            //new Page09(this), // Yellow Dot - bg black
+            new Page01(this),   // middle
+            new Page02(this),   // left
+            new Page02_01(this), // right 
+            new Page02_02(this), // top
+            new Page02_03(this), // bottom color
+            new Page02_04(this), // top color
+            new Page02_05(this),   // right color
+            new Page03(this),   // left color
+            new Page05(this), // middle color
+            new Page06(this), // Dup Blue
+            new Page08(this), // Dup Yellow
+            new Page07(this), // Dup Red
+            new Page09(this), // Yellow Dot - bg black
+            new Page_SmallDotsToBig(this),
             //new Page10(this), // Yellow Dot 2
             ////new Page11(this), // Tilt Left
             ////new Page12(this), // Tilt Right
-            //new Page13(this), // Dis Red
-            //new Page14(this), // Dis Blue
-            //new Page15(this), // Dis Yellow
-            new Page_ScaleUp(this)
+            new Page13(this), // Dis Red
+            new Page14(this), // Dis Blue
+            new Page15(this), // Dis Yellow
+            //new Page_ScaleUp(this)
         };
     }
+
+
 }

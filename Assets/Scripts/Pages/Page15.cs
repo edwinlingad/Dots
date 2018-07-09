@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Page15 : PageBase {
     public override string PageText => "Last but not least, the yellow dots";
-    public override Color PageTextColor => Color.black;
+    public override Color PageTextColor => Color.white;
     private int _count = 0;
 
     public Page15(Controller controller) : base(controller) {
@@ -34,7 +34,7 @@ public class Page15 : PageBase {
         DelayedRun(() => {
             _count++;
             HideDot(dot.Id + 1);
-            if (_count >= 3) {
+            if (_count >= 5) {
                 GotoNextPage();
             }
         }, AnyActionDelay);

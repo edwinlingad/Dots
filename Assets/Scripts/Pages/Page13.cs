@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Page13 : PageBase {
     public override string PageText => "Press all the red dots in any order";
-    public override Color PageTextColor => Color.black;
+    public override Color PageTextColor => Color.white;
     private int _count = 0;
 
     public Page13(Controller controller) : base(controller) {

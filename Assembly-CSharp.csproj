@@ -85,6 +85,7 @@
     <Compile Include="Assets\Scripts\Pages\Page14.cs" />
     <Compile Include="Assets\Scripts\Pages\Page15.cs" />
     <Compile Include="Assets\Scripts\Pages\PageBase.cs" />
+    <Compile Include="Assets\Scripts\SceneController.cs" />
     <Compile Include="Assets\Scripts\Tools\ColorUtil.cs" />
     <Compile Include="Assets\Scripts\Tools\GizmosRenderer.cs" />
     <Compile Include="Assets\Scripts\Tools\Helper.cs" />
