@@ -6,6 +6,7 @@ public class DotBehavior : MonoBehaviour {
     private Vector3 _offset;
     private Controller _controller;
     private Vector3 _originalPosition;
+    public bool IsAlreadyPressed { get; set; }
     public Material Material { get; private set; }
     public int Id;
 

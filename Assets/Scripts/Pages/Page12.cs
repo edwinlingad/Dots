@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Page12 : PageBase {
 
-    public override string PageText => "Press the yellow dot again";
+    public override string PageText => "Tilt to the right";
+    public override Color PageTextColor => Color.black;
 
     public Page12(Controller controller) : base(controller) {
     }

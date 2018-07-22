@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Page10 : PageBase {
 
-    public override string PageText => "Press the yellow dot again";
+    public override string PageText => "Press the middle yellow dot";
     public override Color PageTextColor => Color.white;
 
     public Page10(Controller controller) : base(controller) {

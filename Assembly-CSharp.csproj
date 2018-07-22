@@ -86,13 +86,14 @@
     <Compile Include="Assets\Scripts\Pages\Page15.cs" />
     <Compile Include="Assets\Scripts\Pages\PageBase.cs" />
     <Compile Include="Assets\Scripts\SceneController.cs" />
+    <Compile Include="Assets\Scripts\SplashScreenScript.cs" />
     <Compile Include="Assets\Scripts\Tools\ColorUtil.cs" />
     <Compile Include="Assets\Scripts\Tools\GizmosRenderer.cs" />
     <Compile Include="Assets\Scripts\Tools\Helper.cs" />
-    <Compile Include="Assets\Scripts\Tools\MicInput.cs" />
     <Compile Include="Assets\Scripts\Tools\ScaleUtil.cs" />
     <Compile Include="Assets\Scripts\Tools\ScreenUtil.cs" />
     <Compile Include="Assets\Scripts\Tools\UiTextUtil.cs" />
+    <Compile Include="Assets\Scripts\Walls\LeftRightWallScript.cs" />
     <Reference Include="UnityEditor.StandardEvents">
       <HintPath>D:/projects/Unity/Dots/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>

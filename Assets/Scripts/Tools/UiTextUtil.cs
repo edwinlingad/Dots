@@ -11,6 +11,7 @@ namespace AscensiveSoftware.Tools.Tools {
         private MonoBehaviour _obj;
         private Text _textObj;
         private float _letterPause = 0.02f;
+        private Coroutine _coroutine = null;
 
         public UiTextUtil(MonoBehaviour obj, Text textObj) {
             _obj = obj;
@@ -18,7 +19,9 @@ namespace AscensiveSoftware.Tools.Tools {
         }
 
         public void TypeText(string text) {
-            _obj.StartCoroutine(DoTypeText(text));
+            if (_coroutine != null)
+                _obj.StopCoroutine(_coroutine);
+            _coroutine = _obj.StartCoroutine(DoTypeText(text));
         }
 
         private IEnumerator DoTypeText(string text) {

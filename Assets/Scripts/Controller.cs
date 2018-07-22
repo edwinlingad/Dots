@@ -27,10 +27,12 @@ public class Controller : MonoBehaviour {
     public static bool IsGlobalDragEnabled { get; set; } = false;
     public static Controller Instance { get; set; }
     public bool IsMicInputEnabled { get; set; } = false;
+    private bool _isTiltLeftDetected = false;
 
     private const float _tiltVariation = 0.3f;
-    private MicInput _micInput;
 
+    [SerializeField]
+    private AudioSource _audioSource;
     [SerializeField]
     public Camera Camera;
     [SerializeField]
@@ -45,6 +47,8 @@ public class Controller : MonoBehaviour {
     private GameObject _topWall;
     [SerializeField]
     private GameObject _bottomWall;
+    [SerializeField]
+    private AudioClip[] _pagesClip;
 
     #region Configurables
     public Material[] Materials;
@@ -60,11 +64,10 @@ public class Controller : MonoBehaviour {
     private UiTextUtil _bottomTextUtil;
     private float _loudnessThreshold = 1.0f;
 
-    public bool TiltEnabled { get; set; } = true;
+    public bool IsTiltEnabled { get; set; } = false;
 
     private void Awake() {
         Instance = this;
-        _micInput = gameObject.GetComponent<MicInput>();
         DotsBehavior = new List<DotBehavior>();
         foreach (var item in Dots) {
             var dots = item.GetComponent<DotBehavior>();
@@ -73,6 +76,7 @@ public class Controller : MonoBehaviour {
     }
 
     private void Start() {
+        Physics.gravity = new Vector3(0, 0, 0);
         _bottomTextUtil = new UiTextUtil(this, _pageTextBottom);
         SetUpWalls();
         Pages = GetPages();
@@ -89,10 +93,13 @@ public class Controller : MonoBehaviour {
     }
 
     private void Update() {
-        if (TiltEnabled == true) {
-            float x = Input.acceleration.x * 10;
-            float y = Input.acceleration.y * 10;
-            Physics.gravity = new Vector3(x, y, 0);
+        if (IsTiltEnabled == true) {
+            DetectTiltLeft();
+            if (_isTiltLeftDetected == true) {
+                float x = Input.acceleration.x * 10;
+                float y = Input.acceleration.y * 10;
+                Physics.gravity = new Vector3(x, y, 0);
+            }
         }
 
         //if(IsMicInputEnabled == true) {
@@ -105,6 +112,13 @@ public class Controller : MonoBehaviour {
 
     }
 
+    private void DetectTiltLeft() {
+        if (_isTiltLeftDetected == true)
+            return;
+        if (Input.acceleration.x <= -0.5)
+            _isTiltLeftDetected = true;
+    }
+
     public void GotoNextPage() {
         if (_currentIndex >= _totalPages - 1) {
             GotoEndPage();
@@ -115,6 +129,34 @@ public class Controller : MonoBehaviour {
         CurrentPage = Pages[_currentIndex];
         CurrentPage.Init();
         ShowPageText();
+        _isNewPage = true;
+        PlayPageSound();
+    }
+
+    private bool _hasPageSoundPlayed = false;
+    private bool _isNewPage = false;
+    public void PlayPageSound() {
+        if(_isNewPage == true) {
+            _audioSource.clip = _pagesClip[_currentIndex];
+            _audioSource.Play();
+            _hasPageSoundPlayed = true;
+            DelayedRun(() => {
+                _hasPageSoundPlayed = false;
+            }, 2);
+        }
+        else {
+            if (_hasPageSoundPlayed == true)
+                return;
+
+            _audioSource.clip = _pagesClip[_currentIndex];
+            _audioSource.Play();
+            _hasPageSoundPlayed = true;
+            DelayedRun(() => {
+                _hasPageSoundPlayed = false;
+            }, 2);
+        }
+
+        _isNewPage = false;
     }
 
     public void GotoEndPage() {
@@ -175,29 +217,35 @@ public class Controller : MonoBehaviour {
         Physics.gravity = new Vector3(0, -10);
     }
 
+    public void SetAllDotIsPressed(bool isPressed) {
+        foreach (var item in DotsBehavior) {
+            item.IsAlreadyPressed = isPressed;
+        }
+    }
+
     private List<PageBase> GetPages() {
         return new List<PageBase>
         {
-            new Page01(this),   // middle
-            new Page02(this),   // left
-            new Page02_01(this), // right 
-            new Page02_02(this), // top
-            new Page02_03(this), // bottom color
-            new Page02_04(this), // top color
-            new Page02_05(this),   // right color
-            new Page03(this),   // left color
-            new Page05(this), // middle color
-            new Page06(this), // Dup Blue
-            new Page08(this), // Dup Yellow
-            new Page07(this), // Dup Red
-            new Page09(this), // Yellow Dot - bg black
-            new Page_SmallDotsToBig(this),
-            //new Page10(this), // Yellow Dot 2
-            ////new Page11(this), // Tilt Left
-            ////new Page12(this), // Tilt Right
-            new Page13(this), // Dis Red
-            new Page14(this), // Dis Blue
-            new Page15(this), // Dis Yellow
+            new Page01(this),   // middle - 1 
+            new Page02(this),   // left - 2
+            new Page02_01(this), // right  - 3
+            new Page02_02(this), // top -4
+            new Page02_03(this), // bottom color -5 
+            new Page02_04(this), // top color -6
+            new Page02_05(this),   // right color-7
+            new Page03(this),   // left color-8
+            new Page05(this), // middle color 9
+            new Page06(this), // Dup Blue 10
+            new Page08(this), // Dup Yellow 11
+            new Page07(this), // Dup Red 12
+            new Page09(this), // Yellow Dot - bg black 13
+            new Page_SmallDotsToBig(this), // 14
+            new Page10(this), // Yellow Dot 2 15
+            new Page11(this), // Tilt Left 16
+            new Page12(this), // Tilt Right 17
+            new Page13(this), // Dis Red 18
+            new Page14(this), // Dis Blue 19
+            new Page15(this), // Dis Yellow 20
             //new Page_ScaleUp(this)
         };
     }

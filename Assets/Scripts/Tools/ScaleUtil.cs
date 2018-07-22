@@ -22,7 +22,7 @@ namespace Assets.Scripts.Tools {
         }
 
         public static void MakeSmallest(DotBehavior dot) {
-            dot.transform.localScale = new Vector3(0.4f, 0.4f, 0.4f);
+            dot.transform.localScale = new Vector3(0.6f, 0.6f, 0.6f);
         }
 
         public static void MakeBiggest(DotBehavior dot) {
